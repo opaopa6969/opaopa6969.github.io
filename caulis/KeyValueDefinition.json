@@ -1,0 +1,150 @@
+{
+    "description": "KeyとValueの構造を定義する",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "required": [
+        "$schema",
+        "keyName",
+        "keyPrefix",
+        "keyExpiresTimeUnit",
+        "keyExpires",
+        "keys",
+        "valueContainer",
+        "valueElementType",
+        "collectionLimit",
+        "processType",
+        "description",
+        "creator",
+        "endpoints",
+        "dataStore",
+        "kinds"
+    ],
+    "properties": {
+        "$schema":{
+            "examples": [""],
+            "type":"string"
+        },
+        "keyName":{
+            "examples": [
+                "LoggedInCountByTerminal"
+            ],
+            "type":"string"
+        },
+        "keyPrefix":{
+            "examples": [
+                "a13"
+            ],
+            "type":"string"
+        } ,
+        "keyExpires":{
+            "examples": [
+                6
+            ],
+            "type":"integer"
+        },
+        "keyExpiresTimeUnit":{
+            "examples": [
+                "month"
+            ],
+            "type":"string",
+            "enum": ["sec","minutes","hour","day","month","year"]
+        } ,
+        "keys":{
+            "examples": ["SiteId", "UserHash"],
+            "type":"array",
+            "items": {
+                "type":"string"
+            }
+        },
+        "valueContainer":{
+            "examples": ["sortedSet"],
+            "type":"string",
+            "enum": ["single","list","set","sortedSet","hash"]
+        },
+        "valueElementType": {
+            "examples": ["string"],
+            "type":"string",
+            "enum": ["string","number","integer","boolean"]
+        },
+        "if":{
+            "properties": {
+                "valueContainer":{
+                    "const":"sortedSet"
+                }
+            }
+        },
+        "then":{
+             "properties": {
+                "sortedSetScore":{
+                    "examples": ["timeStamp"],
+                    "type":"string",
+                    "enum": ["score","timeStamp"]
+                }
+             }   
+        },
+        "collectionLimit":{
+            "examples": [1000],
+            "type":"integer",
+            "maximum": 65535
+        },
+        "additionalProcessForInsertion": {
+            "examples": ["delete old entry of over limit"],
+            "type":"string"
+        },
+        "additionalProcessForReading":{
+            "type":"string"
+        } ,
+        "processType": {
+            "examples": [
+                "simpleNumber"
+            ],
+            "type":"string",
+            "enum": [
+                "simpleBoolean",
+                "simpleNumber",
+                "countable",
+                "simpleString",
+                "simpleBytes",
+                "arrayStringList",
+                "simpleStringSet",
+                "simpleIntegerSet",
+                "numberScoredSortedSet",
+                "timestampeScoredSortedSet",
+                "hash",
+                "countableHash",
+                "numberHash",
+                "timestampHash",
+                "FloatMultiHash",
+                "histogramCountable",
+                "HyperLoglog",
+                "json",
+                "xml"
+            ]
+        },
+        "description":{
+            "examples": ["説明"],
+            "type":"string"
+        },
+        "creator": {
+            "examples": ["FraudAlert"],
+            "type":"string",
+            "enum": ["FraudAlert","FingerPrint","Clue","LongTermAnalyzer"]
+        },
+        "endpoints":{
+            "examples": ["loginSucceed"],
+            "type":"string"
+        },
+        "dataStore": {
+            "examples": ["AeroSpike"],
+            "type":"string",
+            "enum": ["AeroSpike","RDS"]
+        },
+        "kinds":{
+            "examples": ["status"],
+            "type":"array",
+            "items": {
+                "type":"string"
+            },            
+            "enum": ["status","checkKind","variable"]
+        }
+    }
+}
