@@ -18,9 +18,25 @@
         "dataStore",
         "kinds"
     ],
+    "if":{
+        "properties": {
+            "valueContainer":{
+                "const":"sortedSet"
+            }
+        }
+    },
+    "then":{
+         "properties": {
+            "sortedSetScore":{
+                "examples": ["timeStamp"],
+                "type":"string",
+                "enum": ["score","timeStamp"]
+            }
+         }   
+    },
     "properties": {
         "$schema":{
-            "examples": [""],
+            "examples": ["https://raw.githubusercontent.com/opaopa6969/opaopa6969.github.io/master/caulis/KeyValueDefinition.json"],
             "type":"string"
         },
         "keyName":{
@@ -64,22 +80,6 @@
             "examples": ["string"],
             "type":"string",
             "enum": ["string","number","integer","boolean"]
-        },
-        "if":{
-            "properties": {
-                "valueContainer":{
-                    "const":"sortedSet"
-                }
-            }
-        },
-        "then":{
-             "properties": {
-                "sortedSetScore":{
-                    "examples": ["timeStamp"],
-                    "type":"string",
-                    "enum": ["score","timeStamp"]
-                }
-             }   
         },
         "collectionLimit":{
             "examples": [1000],
