@@ -18,6 +18,22 @@
         "dataStore",
         "kinds"
     ],
+    "if":{
+        "properties": {
+            "valueContainer":{
+                "const":"sortedSet"
+            }
+        }
+    },
+    "then":{
+         "properties": {
+            "sortedSetScore":{
+                "examples": ["timeStamp"],
+                "type":"string",
+                "enum": ["score","timeStamp"]
+            }
+         }   
+    },
     "properties": {
         "$schema":{
             "examples": ["https://raw.githubusercontent.com/opaopa6969/opaopa6969.github.io/master/caulis/KeyValueDefinition.json"],
