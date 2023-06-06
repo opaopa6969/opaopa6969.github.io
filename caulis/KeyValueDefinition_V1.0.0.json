@@ -36,7 +36,7 @@
     },
     "properties": {
         "$schema":{
-            "examples": ["https://raw.githubusercontent.com/opaopa6969/opaopa6969.github.io/master/caulis/KeyValueDefinition.json"],
+            "examples": ["https://raw.githubusercontent.com/opaopa6969/opaopa6969.github.io/master/caulis/KeyValueDefinition_V1.0.0.json"],
             "type":"string"
         },
         "keyName":{
@@ -79,7 +79,7 @@
         "valueElementType": {
             "examples": ["string"],
             "type":"string",
-            "enum": ["string","number","integer","boolean"]
+            "enum": ["string","number","integer","boolean","json","xml"]
         },
         "collectionLimit":{
             "examples": [1000],
@@ -115,9 +115,7 @@
                 "timestampHash",
                 "FloatMultiHash",
                 "histogramCountable",
-                "HyperLoglog",
-                "json",
-                "xml"
+                "HyperLoglog"
             ]
         },
         "description":{
@@ -127,7 +125,7 @@
         "creator": {
             "examples": ["FraudAlert"],
             "type":"string",
-            "enum": ["FraudAlert","FingerPrint","Clue","LongTermAnalyzer"]
+            "enum": ["FraudAlert","FingerPrint","Clue","LongTermAnalyzer","Vacant"]
         },
         "endpoints":{
             "examples": ["loginSucceed"],
