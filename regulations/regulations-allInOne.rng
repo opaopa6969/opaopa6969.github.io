@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+	datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+	
+	<start>
+		<ref name="規定"/>
+	</start>
+	
+	<define name="規定" ns="http://unluxer.org/regulations/regulation">
+		<element name="規定">
+			
+			<ref name="規定DSL作成"/>
+			<ref name="プロセス作成"/>
+			<optional>
+				<ref name="人物リスト"/>
+			</optional>
+			<optional>
+				<ref name="組織リスト"/>
+			</optional>
+			<optional>
+				<ref name="ドキュメントスニペットリスト"/>
+			</optional>
+			
+			<optional>
+				<ref name="ドキュメントリスト"/>
+			</optional>
+			<optional>
+				<ref name="サービスリスト"/>
+			</optional>
+		</element>
+	</define>
+	
+	<define name="規定DSL作成" ns="http://unluxer.org/regulations/regulation">
+		<element name="規定DSL作成">
+			<oneOrMore>
+				<ref name="コード"/>
+			</oneOrMore>
+		</element>
+		
+	</define>
+	
+	<define name="プロセス作成" ns="http://unluxer.org/regulations/regulation">
+		<element name="プロセス作成">
+			<zeroOrMore>
+				<ref name="プロセス"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="コード" ns="http://unluxer.org/regulations/regulation">
+		<element name="コード">
+			<optional>
+				<element name="説明">
+					<text/>
+				</element>
+			</optional>
+			<optional>
+				<element name="事前条件">
+					<ref name="プロセス参照"/>
+				</element>
+			</optional>
+			<optional>
+				<element name="事後条件">
+					<ref name="プロセス参照"/>
+				</element>
+			</optional>
+			<optional>
+				<element name="対象法令_ガイドライン">
+					<choice>
+						<ref name="ドキュメントスニペット"/>
+						<attribute name="対象スニペットID">
+							<data type="IDREF"/>
+						</attribute>
+					</choice>
+				</element>
+				<ref name="対応する規定の文章"/>
+			</optional>
+			<zeroOrMore>
+				<ref name="コード"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="対応する規定の文章" ns="http://unluxer.org/regulations/regulation">
+		<element name="対応する規定の文章群">
+			<oneOrMore>
+				<ref name="テキスト"/>				
+			</oneOrMore>
+		</element>
+	</define>
+
+	<define name="人物" ns="http://unluxer.org/regulations/person">
+		<element name="人物">
+			<optional>
+				<attribute name="名前">
+					<text/>
+				</attribute>
+			</optional>
+			<attribute name="ID" ns="http://unluxer.org/regulations/person">
+				<data type="ID"/>
+			</attribute>
+			<attribute name="Role">
+				<ref name="Role"/>
+			</attribute>
+		</element>
+	</define>
+	
+	<define name="Role">
+		<choice>
+			<value>組織従業員</value>
+			<value>サービス利用者</value>
+			<value>法令ガイドライン策定者</value>
+			<value>規程作成者</value>
+			<value>規程査読者</value>
+			<value>規程運用者</value>
+			<value>規程運用監査</value>
+			<value>規定DSL作成者</value>
+			<value>犯罪者</value>
+			<data type="token"/>
+		</choice>
+	</define>
+	
+	<define name="人物参照" ns="http://unluxer.org/regulations/person" combine="interleave">
+		<choice>
+			<oneOrMore>
+				<ref name="人物"/>
+			</oneOrMore>
+			<element name="人物参照">
+				<attribute name="IDS">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
+				</attribute>
+			</element>
+		</choice>
+	</define>
+	
+	<define name="人物リスト" ns="http://unluxer.org/regulations/person">
+		<element name="人物リスト">
+			<zeroOrMore>
+				<ref name="人物"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="組織" ns="http://unluxer.org/regulations/organization" combine="interleave">
+		<element name="組織名">
+			<optional>
+				<attribute name="名前">
+					<text/>
+				</attribute>
+			</optional>
+				
+			<attribute name="ID" ns="http://unluxer.org/regulations/organization">
+				<data type="ID"/>
+			</attribute>
+			<zeroOrMore>
+				<ref name="部門"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="組織リスト" ns="http://unluxer.org/regulations/organization"  combine="interleave">
+		<element name="組織リスト">
+			<zeroOrMore>
+				<ref name="組織"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="部門" ns="http://unluxer.org/regulations/department">
+		<element name="部門">
+			<optional>
+				<attribute name="部門名">
+					<text/>
+				</attribute>
+			</optional>
+			<optional>
+				<attribute name="Role">
+					<ref name="Role"/>
+				</attribute>
+			</optional>
+			<attribute name="ID" ns="http://unluxer.org/regulations/department">
+				<data type="ID"/>
+			</attribute>
+			<zeroOrMore>
+				<element name="下位部門">
+					<choice>
+						<attribute name="IDS">
+							<data type="IDREFS" ns="http://unluxer.org/regulations/department"/>
+						</attribute>
+						<ref name="部門"/>
+					</choice>
+				</element>
+			</zeroOrMore>
+			
+			<optional>
+				<element name="所属人">
+					<zeroOrMore>
+						<choice>
+							<ref name="人物" ns="http://unluxer.org/regulations/person"/>
+							<attribute name="IDS">
+								<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
+							</attribute>							
+						</choice>
+					</zeroOrMore>
+				</element>
+			</optional>
+		</element>
+	</define>
+	
+	<define name="組織参照" ns="http://unluxer.org/regulations/person" combine="interleave">
+		<choice>
+			<oneOrMore>
+				<ref name="組織"/>
+			</oneOrMore>
+			<element name="組織参照">
+				<attribute name="IDS">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
+				</attribute>
+			</element>
+		</choice>
+	</define>
+
+	<define name="ドキュメント" ns="http://unluxer.org/regulations/reference">
+		<element name="ドキュメント">
+			<attribute name="ID" ns="http://unluxer.org/regulations/reference/id">
+				<data type="ID"/>
+			</attribute>
+			<attribute name="名前">
+				<data type="token"/>
+			</attribute>
+			<optional>
+				<attribute name="発行者">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/organization/id"/>
+				</attribute>
+			</optional>
+			<attribute name="発行日">
+				<data type="date"/>
+			</attribute>
+			<attribute name="URL">
+				<data type="anyURI"/>
+			</attribute>
+		</element>
+	</define>
+	
+	<define name="ドキュメントスニペット" ns="http://unluxer.org/regulations/reference">
+		<element name="ドキュメントスニペット">
+			<optional>
+				<attribute name="スニペットID">
+					<data type="ID" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+				</attribute>
+			</optional>
+			<attribute name="参照ドキュメントID" ns="http://unluxer.org/regulations/reference/id">
+				<data type="IDREF"/>
+			</attribute>
+			<zeroOrMore>
+				<element name="参照スニペットID">
+					<attribute name="ID">
+						<data type="IDREFS" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+					</attribute>
+				</element>
+			</zeroOrMore>
+				
+			<ref name="ページと行数"/>
+			<element name="スニペット" ns="http://unluxer.org/regulations/reference">
+				<text/>
+			</element>
+		</element>
+	</define>
+	
+	
+	
+	<define name="ページと行数" ns="http://unluxer.org/regulations/reference">
+		<group>
+			<element name="開始" >
+				
+				<optional>
+					<attribute name="開始章節項">
+						<data type="token"/>
+					</attribute>
+				</optional>
+				
+				<attribute name="開始ページ">
+					<data type="integer"/>
+				</attribute>
+				
+				<optional>
+					<attribute name="開始行">
+						<data type="integer"/>
+					</attribute>
+				</optional>
+				
+				<optional>
+					<attribute name="開始カラム">
+						<data type="integer"/>
+					</attribute>
+				</optional>
+					
+			</element>
+	
+		
+			<optional>
+				<element name="終了">
+					
+					<optional>
+						<attribute name="終了章節項">
+							<data type="token"/>
+						</attribute>
+					</optional>
+	
+						
+					<optional>
+						<attribute name="終了ページ">
+							<data type="integer"/>
+						</attribute>
+					</optional>
+					
+					<optional>
+						<attribute name="終了行">
+							<data type="integer"/>
+						</attribute>
+					</optional>
+					
+					<optional>
+						<attribute name="終了カラム">
+							<data type="integer"/>
+						</attribute>
+					</optional>
+				</element>
+			</optional>	
+		</group>
+	</define>
+	
+	<define name="ドキュメント参照" ns="http://unluxer.org/regulations/reference" combine="interleave">
+		<choice>
+			<oneOrMore>
+				<ref name="ドキュメントスニペット"/>
+			</oneOrMore>
+			<zeroOrMore>
+				<element name="参照スニペットID">
+					<attribute name="ID">
+						<data type="IDREFS" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+					</attribute>
+				</element>
+			</zeroOrMore>
+		</choice>
+	</define>
+
+	<define name="ドキュメントリスト" ns="http://unluxer.org/regulations/reference">
+		<element name="ドキュメントリスト">
+			<zeroOrMore>
+				<ref name="ドキュメント"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="ドキュメントスニペットリスト" ns="http://unluxer.org/regulations/reference">
+		<element name="ドキュメントスニペットリスト">
+			<zeroOrMore>
+				<ref name="ドキュメントスニペット"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="プロセス参照" ns="http://unluxer.org/regulations/process" combine="interleave">
+		<oneOrMore>
+			<choice>
+				<ref name="プロセス"/>
+				<element name="プロセス参照">
+					<attribute name="IDS" ns="http://unluxer.org/regulations/process">
+						<data type="IDREFS"/>
+					</attribute>
+				</element>
+			</choice>
+		</oneOrMore>
+	</define>
+	
+	<define name="プロセス" ns="http://unluxer.org/regulations/process" combine="interleave">
+		<element name="プロセス">
+			<optional>
+				<attribute name="名前">
+					<text/>
+				</attribute>
+					
+			</optional>
+			<attribute name="ID" ns="http://unluxer.org/regulations/process">
+				<data type="ID"/>
+			</attribute>
+			
+			<ref name="プロセス条件"/>				
+			
+			<!-- condition -->
+			<!-- action / procedure -->
+			<!-- what -->
+			<!-- where -->
+			<!-- input -->
+			<!-- output -->
+			<zeroOrMore>
+				<ref name="プロセス"/>
+			</zeroOrMore>
+		</element>
+	</define>
+	
+	<define name="プロセス条件" combine="interleave" ns="http://unluxer.org/regulations/process/condition">
+		<element name="プロセス条件">
+			<attribute name="ID" ns="http://unluxer.org/regulations/process/condition">
+				<data type="ID"/>
+			</attribute>
+			<ref name="論理演算子"/>
+			<oneOrMore>
+				<choice>
+					<ref name="プロセス条件"/>
+					<element name="参照条件">
+						<attribute name="IDS" ns="http://unluxer.org/regulations/process/condition">
+							<data type="IDREFS"/>
+						</attribute>
+					</element>					
+					<ref name="プロセス条件文"/>
+				</choice>
+			</oneOrMore>
+		</element>
+	</define>
+	
+	<define name="プロセス条件文" combine="interleave" ns="http://unluxer.org/regulations/condition">
+		<element name="プロセス条件文">
+			<!-- who / event source  -->
+				<element name="イベント開始元">
+					<optional>
+						<choice>
+							<ref name="人物参照"/>
+							<group>
+								<ref name="組織参照"/>
+								<ref name="人物参照"/>
+							</group>
+						</choice>
+					</optional>
+					<choice>
+						<ref name="サービスエンドポイント参照"/>
+						<ref name="ドキュメント参照"/>
+						<ref name="プロセス"/>
+					</choice>
+				</element>
+			<oneOrMore>
+				<choice>
+					<group>
+						<choice>
+							<ref name="二項論理演算子"/>
+							<ref name="二項算術論理演算"/>
+						</choice>
+						<element name="右辺"><!-- todo choiceable -->
+							<text/>
+						</element>			
+					</group>
+					<element name="アクション">
+						<mixed>
+							<optional>
+								<ref name="運用アクションエレメント"/>
+							</optional>
+							<optional>
+								<ref name="規程作成アクションエレメント"/>
+							</optional>
+							<optional>
+								<ref name="システムアクションエレメント"/>
+							</optional>
+						</mixed>
+					</element>					
+				</choice>
+			</oneOrMore>
+		</element>
+	</define>
+	
+	<define name="運用アクション" ns="http://unluxer.org/regulations/action/operation" combine="interleave">
+		<choice>
+			<value>読み取り</value>
+			<value>書き込み</value>
+			<value>計算</value>
+			<value>変換</value>
+			<text/>
+		</choice>
+	</define>
+	
+	<define name="運用アクションエレメント" ns="http://unluxer.org/regulations/action/operation" combine="interleave">
+		<element name="運用アクション">
+			<ref name="運用アクション"/>
+		</element>
+	</define>
+	
+	<define name="規程作成アクション" ns="http://unluxer.org/regulations/action/regulations" combine="interleave">
+		<choice>
+			<value>読み取り</value>
+			<value>書き込み</value>
+			<value>計算</value>
+			<value>変換</value>
+			<text/>
+		</choice>
+	</define>
+
+	<define name="規程作成アクションエレメント" ns="http://unluxer.org/regulations/action/operation" combine="interleave">
+		<element name="規程作成アクション">
+			<ref name="規程作成アクション"/>
+		</element>
+	</define>
+	
+	<define name="システムアクション" ns="http://unluxer.org/regulations/action/system" combine="interleave">
+		<choice>
+			<value>読み取り</value>
+			<value>書き込み</value>
+			<value>計算</value>
+			<value>変換</value>
+			<text/>
+		</choice>
+	</define>
+
+	<define name="システムアクションエレメント" ns="http://unluxer.org/regulations/action/operation" combine="interleave">
+		<element name="システムアクション">
+			<ref name="システムアクション"/>
+		</element>
+	</define>
+	
+	<define name="論理演算子" combine="interleave" ns="http://unluxer.org/regulations/condition">
+		<attribute name="論理演算子">
+			<choice>
+				<value>すべてが当てはまる時</value>
+				<value>どれかが当てはまる時</value>
+				<value>当てはまらない時</value>
+			</choice>
+		</attribute>
+	</define>
+
+	<define name="二項論理演算子" combine="interleave" ns="http://unluxer.org/regulations/condition">
+		<element name="二項論理演算子">
+			<choice>
+				<value>等しい</value>
+				<value>等しくない</value>
+			</choice>
+		</element>
+	</define>
+	
+	<define name="二項算術論理演算" combine="interleave" ns="http://unluxer.org/regulations/condition">
+			<element name="二項算術論理演算子">
+				<choice>
+				<value>等しい</value>
+				<value>等しくない</value>
+				<value>以上</value>
+				<value>より大きい</value>
+				<value>以下</value>
+				<value>より小さい</value>
+			</choice>
+		</element>
+	</define>
+	
+	<define name="条件リスト" combine="interleave" ns="http://unluxer.org/regulations/condition">
+		<element name="条件リスト">
+			<zeroOrMore>
+				<ref name="プロセス条件"/>
+			</zeroOrMore>
+		</element>
+	</define>
+
+	<define name="テキスト" ns="http://unluxer.org/regulations/text">
+		<element name="テキスト">
+			<optional>
+				<attribute name="編集者">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/person/id"/>
+				</attribute>
+			</optional>
+			<oneOrMore>
+				<mixed>
+					<optional>
+						<ref name="テキスト"/>
+					</optional>
+					<optional>
+						<ref name="プロセス条件"/>
+					</optional>
+				</mixed>
+			</oneOrMore>
+		</element>
+	</define>
+
+	<define name="サービス" ns="http://unluxer.org/regulations/service" combine="interleave">
+		<element name="サービス">
+			<optional>
+				<attribute name="名前">
+					<text/>
+				</attribute>
+			</optional>
+			<attribute name="ID" ns="http://unluxer.org/regulations/service">
+				<data type="ID"/>
+			</attribute>
+			<attribute name="提供組織" ns="http://unluxer.org/regulations/organization">
+				<data type="IDREF" />
+			</attribute>
+			<oneOrMore>
+				<ref name="サービスエンドポイント"/>
+			</oneOrMore>
+		</element>
+	</define>
+	
+	<define name="サービスエンドポイント" ns="http://unluxer.org/regulations/service/endpoint" combine="interleave">
+		<element name="サービスエンドポイント">
+			<optional>
+				<attribute name="名前">
+					<text/>
+				</attribute>
+			</optional>
+			<attribute name="ID" ns="http://unluxer.org/regulations/service">
+				<data type="ID"/>
+			</attribute>
+			<optional>
+				<element name="説明">
+					<text/>
+				</element>
+			</optional>
+			<oneOrMore>
+				<element name="トランザクション">
+					<attribute name="名前">
+						<text/>
+					</attribute>
+					<attribute name="提供形態">
+							<choice>
+							<value>オンライン</value>
+							<value>オフライン</value>
+						</choice>
+					</attribute>
+					<optional>
+						<element name="入力">
+							<text/>
+						</element>
+					</optional>
+					<optional>
+						<element name="出力">
+							<text/>
+						</element>
+					</optional>
+				</element>
+			</oneOrMore>
+		</element>
+	</define>
+	
+	<define name="サービス参照" ns="http://unluxer.org/regulations/service" combine="interleave">
+		<choice>
+			<oneOrMore>
+				<ref name="サービス"/>
+			</oneOrMore>
+			<element name="サービス参照">
+				<attribute name="IDS">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/service"/>
+				</attribute>
+			</element>
+		</choice>
+	</define>
+	
+	<define name="サービスエンドポイント参照" ns="http://unluxer.org/regulations/service/endpoint" combine="interleave">
+		<choice>
+			<oneOrMore>
+				<ref name="サービスエンドポイント"/>
+			</oneOrMore>
+			<element name="サービスエンドポイント参照">
+				<attribute name="IDS">
+					<data type="IDREFS" ns="http://unluxer.org/regulations/service/endpoint"/>
+				</attribute>
+			</element>
+		</choice>
+	</define>
+	
+	<define name="サービスリスト" ns="http://unluxer.org/regulations/service"  combine="interleave">
+		<element name="サービスリスト">
+			<zeroOrMore>
+				<ref name="サービス"/>
+			</zeroOrMore>
+		</element>
+	</define>
+</grammar>
