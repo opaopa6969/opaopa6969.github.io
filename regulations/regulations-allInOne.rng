@@ -69,9 +69,9 @@
 				<element name="対象法令_ガイドライン">
 					<choice>
 						<ref name="ドキュメントスニペット"/>
-						<attribute name="対象スニペットID">
+						<element name="対象スニペットID">
 							<data type="IDREF"/>
-						</attribute>
+						</element>
 					</choice>
 				</element>
 				<ref name="対応する規定の文章"/>
@@ -127,8 +127,8 @@
 				<ref name="人物"/>
 			</oneOrMore>
 			<element name="人物参照">
-				<attribute name="IDS">
-					<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
+				<attribute name="IDS" ns="http://unluxer.org/regulations/person">
+					<data type="IDREFS"/>
 				</attribute>
 			</element>
 		</choice>
@@ -185,10 +185,10 @@
 			<zeroOrMore>
 				<element name="下位部門">
 					<choice>
-						<attribute name="IDS">
-							<data type="IDREFS" ns="http://unluxer.org/regulations/department"/>
-						</attribute>
 						<ref name="部門"/>
+						<element name="IDS"  ns="http://unluxer.org/regulations/department">
+							<data type="IDREFS"/>
+						</element>
 					</choice>
 				</element>
 			</zeroOrMore>
@@ -198,9 +198,9 @@
 					<zeroOrMore>
 						<choice>
 							<ref name="人物" ns="http://unluxer.org/regulations/person"/>
-							<attribute name="IDS">
-								<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
-							</attribute>							
+							<element name="IDS"  ns="http://unluxer.org/regulations/person">
+								<data type="IDREFS"/>
+							</element>							
 						</choice>
 					</zeroOrMore>
 				</element>
@@ -214,8 +214,8 @@
 				<ref name="組織"/>
 			</oneOrMore>
 			<element name="組織参照">
-				<attribute name="IDS">
-					<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
+				<attribute name="IDS" ns="http://unluxer.org/regulations/person">
+					<data type="IDREFS"/>
 				</attribute>
 			</element>
 		</choice>
@@ -223,15 +223,15 @@
 
 	<define name="ドキュメント" ns="http://unluxer.org/regulations/reference">
 		<element name="ドキュメント">
-			<attribute name="ID" ns="http://unluxer.org/regulations/reference/id">
+			<attribute name="ID" ns="http://unluxer.org/regulations/reference">
 				<data type="ID"/>
 			</attribute>
 			<attribute name="名前">
 				<data type="token"/>
 			</attribute>
 			<optional>
-				<attribute name="発行者">
-					<data type="IDREFS" ns="http://unluxer.org/regulations/organization/id"/>
+				<attribute name="発行者" ns="http://unluxer.org/regulations/organization">
+					<data type="IDREFS"/>
 				</attribute>
 			</optional>
 			<attribute name="発行日">
@@ -246,17 +246,17 @@
 	<define name="ドキュメントスニペット" ns="http://unluxer.org/regulations/reference">
 		<element name="ドキュメントスニペット">
 			<optional>
-				<attribute name="スニペットID">
-					<data type="ID" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+				<attribute name="スニペットID" ns="http://unluxer.org/regulations/reference/snippet">
+					<data type="ID"/>
 				</attribute>
 			</optional>
-			<attribute name="参照ドキュメントID" ns="http://unluxer.org/regulations/reference/id">
+			<attribute name="参照ドキュメントID" ns="http://unluxer.org/regulations/reference">
 				<data type="IDREF"/>
 			</attribute>
 			<zeroOrMore>
 				<element name="参照スニペットID">
-					<attribute name="ID">
-						<data type="IDREFS" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+					<attribute name="ID" ns="http://unluxer.org/regulations/reference/snippet">
+						<data type="IDREFS"/>
 					</attribute>
 				</element>
 			</zeroOrMore>
@@ -338,8 +338,8 @@
 			</oneOrMore>
 			<zeroOrMore>
 				<element name="参照スニペットID">
-					<attribute name="ID">
-						<data type="IDREFS" ns="http://unluxer.org/regulations/reference/snippet/id"/>
+					<attribute name="ID" ns="http://unluxer.org/regulations/reference/snippet">
+						<data type="IDREFS"/>
 					</attribute>
 				</element>
 			</zeroOrMore>
@@ -561,7 +561,7 @@
 		<element name="テキスト">
 			<optional>
 				<attribute name="編集者">
-					<data type="IDREFS" ns="http://unluxer.org/regulations/person/id"/>
+					<data type="IDREFS" ns="http://unluxer.org/regulations/person"/>
 				</attribute>
 			</optional>
 			<oneOrMore>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://unluxer.org/regulations/department" xmlns:condition="http://unluxer.org/regulations/process/condition" xmlns:text="http://unluxer.org/regulations/text" xmlns:snippet="http://unluxer.org/regulations/reference/snippet" xmlns:o="http://unluxer.org/regulations/organization" xmlns:regulation="http://unluxer.org/regulations/regulation" xmlns:process="http://unluxer.org/regulations/process" xmlns:person="http://unluxer.org/regulations/person" xmlns:reference="http://unluxer.org/regulations/reference" xmlns:c="http://unluxer.org/regulations/condition" xmlns:service="http://unluxer.org/regulations/service" xmlns:operation="http://unluxer.org/regulations/action/operation" xmlns:endpoint="http://unluxer.org/regulations/service/endpoint" xmlns:department="http://unluxer.org/regulations/department">
+  <xs:import namespace="http://unluxer.org/regulations/action/operation" schemaLocation="operation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/condition" schemaLocation="c.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/organization" schemaLocation="o.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/person" schemaLocation="person.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process" schemaLocation="process.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process/condition" schemaLocation="condition.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference" schemaLocation="規程allInOne.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference/snippet" schemaLocation="snippet.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/regulation" schemaLocation="regulation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service" schemaLocation="service.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service/endpoint" schemaLocation="endpoint.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/text" schemaLocation="text.xsd"/>
+  <xs:element name="部門">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="department:下位部門"/>
+        <xs:element minOccurs="0" ref="department:所属人"/>
+      </xs:sequence>
+      <xs:attribute name="部門名"/>
+      <xs:attribute name="Role" type="reference:Role"/>
+      <xs:attribute name="ID" use="required" form="qualified" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="下位部門">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="department:部門"/>
+        <xs:element ref="department:IDS"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IDS" type="xs:IDREFS"/>
+  <xs:element name="所属人">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="person:人物"/>
+        <xs:element ref="person:IDS"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

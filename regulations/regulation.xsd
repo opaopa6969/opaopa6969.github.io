@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://unluxer.org/regulations/regulation" xmlns:condition="http://unluxer.org/regulations/process/condition" xmlns:text="http://unluxer.org/regulations/text" xmlns:snippet="http://unluxer.org/regulations/reference/snippet" xmlns:o="http://unluxer.org/regulations/organization" xmlns:regulation="http://unluxer.org/regulations/regulation" xmlns:process="http://unluxer.org/regulations/process" xmlns:person="http://unluxer.org/regulations/person" xmlns:reference="http://unluxer.org/regulations/reference" xmlns:c="http://unluxer.org/regulations/condition" xmlns:service="http://unluxer.org/regulations/service" xmlns:operation="http://unluxer.org/regulations/action/operation" xmlns:endpoint="http://unluxer.org/regulations/service/endpoint" xmlns:department="http://unluxer.org/regulations/department">
+  <xs:import namespace="http://unluxer.org/regulations/action/operation" schemaLocation="operation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/condition" schemaLocation="c.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/department" schemaLocation="department.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/organization" schemaLocation="o.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/person" schemaLocation="person.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process" schemaLocation="process.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process/condition" schemaLocation="condition.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference" schemaLocation="規程allInOne.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference/snippet" schemaLocation="snippet.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service" schemaLocation="service.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service/endpoint" schemaLocation="endpoint.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/text" schemaLocation="text.xsd"/>
+  <xs:element name="規定">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="regulation:規定DSL作成"/>
+        <xs:element ref="regulation:プロセス作成"/>
+        <xs:element minOccurs="0" ref="person:人物リスト"/>
+        <xs:element minOccurs="0" ref="o:組織リスト"/>
+        <xs:element minOccurs="0" ref="reference:ドキュメントスニペットリスト"/>
+        <xs:element minOccurs="0" ref="reference:ドキュメントリスト"/>
+        <xs:element minOccurs="0" ref="service:サービスリスト"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="規定DSL作成">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="regulation:コード"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="プロセス作成">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="process:プロセス"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="コード">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="regulation:説明"/>
+        <xs:element minOccurs="0" ref="regulation:事前条件"/>
+        <xs:element minOccurs="0" ref="regulation:事後条件"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="regulation:対象法令_ガイドライン"/>
+          <xs:element ref="regulation:対応する規定の文章群"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="regulation:コード"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="説明" type="xs:string"/>
+  <xs:element name="事前条件" type="reference:プロセス参照"/>
+  <xs:element name="事後条件" type="reference:プロセス参照"/>
+  <xs:element name="対象法令_ガイドライン">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="reference:ドキュメントスニペット"/>
+        <xs:element ref="regulation:対象スニペットID"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="対象スニペットID" type="xs:IDREF"/>
+  <xs:element name="対応する規定の文章群">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="text:テキスト"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

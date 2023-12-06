@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://unluxer.org/regulations/condition" xmlns:condition="http://unluxer.org/regulations/process/condition" xmlns:text="http://unluxer.org/regulations/text" xmlns:snippet="http://unluxer.org/regulations/reference/snippet" xmlns:o="http://unluxer.org/regulations/organization" xmlns:regulation="http://unluxer.org/regulations/regulation" xmlns:process="http://unluxer.org/regulations/process" xmlns:person="http://unluxer.org/regulations/person" xmlns:reference="http://unluxer.org/regulations/reference" xmlns:c="http://unluxer.org/regulations/condition" xmlns:service="http://unluxer.org/regulations/service" xmlns:operation="http://unluxer.org/regulations/action/operation" xmlns:endpoint="http://unluxer.org/regulations/service/endpoint" xmlns:department="http://unluxer.org/regulations/department">
+  <xs:import namespace="http://unluxer.org/regulations/action/operation" schemaLocation="operation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/department" schemaLocation="department.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/organization" schemaLocation="o.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/person" schemaLocation="person.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process" schemaLocation="process.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process/condition" schemaLocation="condition.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference" schemaLocation="規程allInOne.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference/snippet" schemaLocation="snippet.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/regulation" schemaLocation="regulation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service" schemaLocation="service.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service/endpoint" schemaLocation="endpoint.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/text" schemaLocation="text.xsd"/>
+  <xs:element name="プロセス条件文">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="c:イベント開始元"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:sequence>
+            <xs:choice>
+              <xs:element ref="c:二項論理演算子"/>
+              <xs:element ref="c:二項算術論理演算子"/>
+            </xs:choice>
+            <xs:element ref="c:右辺"/>
+          </xs:sequence>
+          <xs:element ref="c:アクション"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="イベント開始元">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0">
+          <xs:group ref="reference:人物参照"/>
+          <xs:sequence>
+            <xs:group ref="reference:組織参照"/>
+            <xs:group ref="reference:人物参照"/>
+          </xs:sequence>
+        </xs:choice>
+        <xs:choice>
+          <xs:group ref="reference:サービスエンドポイント参照"/>
+          <xs:group ref="reference:ドキュメント参照"/>
+          <xs:element ref="process:プロセス"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="右辺" type="xs:string"/>
+  <xs:element name="アクション">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="operation:運用アクション"/>
+        <xs:element minOccurs="0" ref="operation:規程作成アクション"/>
+        <xs:element minOccurs="0" ref="operation:システムアクション"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="二項論理演算子">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="等しい"/>
+        <xs:enumeration value="等しくない"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="二項算術論理演算子">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:enumeration value="等しい"/>
+        <xs:enumeration value="等しくない"/>
+        <xs:enumeration value="以上"/>
+        <xs:enumeration value="より大きい"/>
+        <xs:enumeration value="以下"/>
+        <xs:enumeration value="より小さい"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="条件リスト">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="condition:プロセス条件"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

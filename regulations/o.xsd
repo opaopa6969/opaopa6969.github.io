@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://unluxer.org/regulations/organization" xmlns:condition="http://unluxer.org/regulations/process/condition" xmlns:text="http://unluxer.org/regulations/text" xmlns:snippet="http://unluxer.org/regulations/reference/snippet" xmlns:o="http://unluxer.org/regulations/organization" xmlns:regulation="http://unluxer.org/regulations/regulation" xmlns:process="http://unluxer.org/regulations/process" xmlns:person="http://unluxer.org/regulations/person" xmlns:reference="http://unluxer.org/regulations/reference" xmlns:c="http://unluxer.org/regulations/condition" xmlns:service="http://unluxer.org/regulations/service" xmlns:operation="http://unluxer.org/regulations/action/operation" xmlns:endpoint="http://unluxer.org/regulations/service/endpoint" xmlns:department="http://unluxer.org/regulations/department">
+  <xs:import namespace="http://unluxer.org/regulations/action/operation" schemaLocation="operation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/condition" schemaLocation="c.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/department" schemaLocation="department.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/person" schemaLocation="person.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process" schemaLocation="process.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process/condition" schemaLocation="condition.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference" schemaLocation="規程allInOne.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference/snippet" schemaLocation="snippet.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/regulation" schemaLocation="regulation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service" schemaLocation="service.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service/endpoint" schemaLocation="endpoint.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/text" schemaLocation="text.xsd"/>
+  <xs:element name="組織名">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="department:部門"/>
+      </xs:sequence>
+      <xs:attribute name="名前"/>
+      <xs:attribute name="ID" use="required" form="qualified" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="組織リスト">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="o:組織名"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:attribute name="発行者" type="xs:IDREFS"/>
+  <xs:attribute name="提供組織" type="xs:IDREF"/>
+</xs:schema>

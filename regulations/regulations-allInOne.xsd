@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://unluxer.org/regulations/reference" xmlns:condition="http://unluxer.org/regulations/process/condition" xmlns:text="http://unluxer.org/regulations/text" xmlns:snippet="http://unluxer.org/regulations/reference/snippet" xmlns:o="http://unluxer.org/regulations/organization" xmlns:regulation="http://unluxer.org/regulations/regulation" xmlns:process="http://unluxer.org/regulations/process" xmlns:person="http://unluxer.org/regulations/person" xmlns:reference="http://unluxer.org/regulations/reference" xmlns:c="http://unluxer.org/regulations/condition" xmlns:service="http://unluxer.org/regulations/service" xmlns:operation="http://unluxer.org/regulations/action/operation" xmlns:endpoint="http://unluxer.org/regulations/service/endpoint" xmlns:department="http://unluxer.org/regulations/department">
+  <xs:import namespace="http://unluxer.org/regulations/action/operation" schemaLocation="operation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/condition" schemaLocation="c.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/department" schemaLocation="department.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/organization" schemaLocation="o.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/person" schemaLocation="person.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process" schemaLocation="process.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/process/condition" schemaLocation="condition.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/reference/snippet" schemaLocation="snippet.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/regulation" schemaLocation="regulation.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service" schemaLocation="service.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/service/endpoint" schemaLocation="endpoint.xsd"/>
+  <xs:import namespace="http://unluxer.org/regulations/text" schemaLocation="text.xsd"/>
+  <xs:simpleType name="Role">
+    <xs:union memberTypes="xs:token">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="組織従業員"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="サービス利用者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="法令ガイドライン策定者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="規程作成者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="規程査読者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="規程運用者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="規程運用監査"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="規定DSL作成者"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="犯罪者"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:group name="人物参照">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="person:人物"/>
+      <xs:element ref="person:人物参照"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="組織参照">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="o:組織名"/>
+      <xs:element ref="person:組織参照"/>
+    </xs:choice>
+  </xs:group>
+  <xs:element name="ドキュメント">
+    <xs:complexType>
+      <xs:attribute name="ID" use="required" form="qualified" type="xs:ID"/>
+      <xs:attribute name="名前" use="required" type="xs:token"/>
+      <xs:attribute ref="o:発行者"/>
+      <xs:attribute name="発行日" use="required" type="xs:date"/>
+      <xs:attribute name="URL" use="required" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ドキュメントスニペット">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="reference:参照スニペットID"/>
+        <xs:group ref="reference:ページと行数"/>
+        <xs:element ref="reference:スニペット"/>
+      </xs:sequence>
+      <xs:attribute ref="snippet:スニペットID"/>
+      <xs:attribute name="参照ドキュメントID" use="required" form="qualified" type="xs:IDREF"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="参照スニペットID">
+    <xs:complexType>
+      <xs:attribute ref="snippet:ID" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="スニペット" type="xs:string"/>
+  <xs:group name="ページと行数">
+    <xs:sequence>
+      <xs:element ref="reference:開始"/>
+      <xs:element minOccurs="0" ref="reference:終了"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="開始">
+    <xs:complexType>
+      <xs:attribute name="開始章節項" type="xs:token"/>
+      <xs:attribute name="開始ページ" use="required" type="xs:integer"/>
+      <xs:attribute name="開始行" type="xs:integer"/>
+      <xs:attribute name="開始カラム" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="終了">
+    <xs:complexType>
+      <xs:attribute name="終了章節項" type="xs:token"/>
+      <xs:attribute name="終了ページ" type="xs:integer"/>
+      <xs:attribute name="終了行" type="xs:integer"/>
+      <xs:attribute name="終了カラム" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="ドキュメント参照">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="reference:ドキュメントスニペット"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="reference:参照スニペットID"/>
+    </xs:choice>
+  </xs:group>
+  <xs:element name="ドキュメントリスト">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="reference:ドキュメント"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ドキュメントスニペットリスト">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="reference:ドキュメントスニペット"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="プロセス参照">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element ref="process:プロセス"/>
+      <xs:element ref="process:プロセス参照"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:attributeGroup name="論理演算子">
+    <xs:attribute name="論理演算子" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="すべてが当てはまる時"/>
+          <xs:enumeration value="どれかが当てはまる時"/>
+          <xs:enumeration value="当てはまらない時"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:group name="サービス参照">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="service:サービス"/>
+      <xs:element ref="service:サービス参照"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="サービスエンドポイント参照">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="endpoint:サービスエンドポイント"/>
+      <xs:element ref="endpoint:サービスエンドポイント参照"/>
+    </xs:choice>
+  </xs:group>
+</xs:schema>
